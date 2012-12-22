@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:wss="http://jax-ws.dev.java.net/spring/servlet" xmlns:ws="http://jax-ws.dev.java.net/spring/core"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:core="http://jax-ws.dev.java.net/spring/core" xmlns:servlet="http://jax-ws.dev.java.net/spring/servlet"
+	xsi:schemaLocation="http://jax-ws.dev.java.net/spring/servlet http://jax-ws.dev.java.net/spring/servlet.xsd
+		http://jax-ws.dev.java.net/spring/core http://jax-ws.dev.java.net/spring/core.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="wsClient"
+		class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean"
+		p:serviceInterface="${serviceInterface}" p:wsdlDocumentUrl="${wsdlDocumentUrl}"
+		p:endpointAddress="${endpointAddress}" p:lookupServiceOnStartup="false"
+		p:portName="${portName}" p:serviceName="${serviceName}"
+		p:namespaceUri="${namespaceUri}">
+	</bean>
+
+
+	<wss:binding url="/ws">
+		<wss:service>
+			<ws:service bean="#messageWebService" />
+		</wss:service>
+	</wss:binding>
+
+</beans>
