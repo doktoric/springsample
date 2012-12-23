@@ -20,7 +20,8 @@ import com.acme.doktorics.service.MessageService;
 @Controller
 public class HomeController {
 	
-	@Autowired MessageService messageService;
+	@Autowired 
+	private MessageService messageService;
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	

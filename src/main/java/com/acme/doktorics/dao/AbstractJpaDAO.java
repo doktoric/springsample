@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AbstractJpaDAO<T> implements IAbstractJpaDAO<T> {
 	private Class<T> clazz;
 
-	@PersistenceContext(name="persistenceUnit")
+	@PersistenceContext
 	protected EntityManager entityManager;
 	
 	public void setClazz(final Class<T> clazzToSet) {
@@ -29,11 +29,9 @@ public class AbstractJpaDAO<T> implements IAbstractJpaDAO<T> {
 	}
 	
 	public void save(final T entity) {
-		try{
+		
 			entityManager.persist(entity);
-		}catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+		
 		
 	}
 

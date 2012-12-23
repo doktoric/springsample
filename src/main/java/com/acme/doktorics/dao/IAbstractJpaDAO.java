@@ -11,7 +11,6 @@ public interface IAbstractJpaDAO<T> {
 	T findOne(final Long id);
 
 	List<T> findAll();
-
 	
 	void save(final T entity);
 
