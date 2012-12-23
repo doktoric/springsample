@@ -12,6 +12,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.HtmlUtils;
 
+import com.acme.doktorics.domain.MessageEventType;
 import com.acme.doktorics.event.MessageEvent;
 
 @Component
@@ -24,8 +25,12 @@ public class MessageEventListener implements ApplicationListener<MessageEvent> {
 		ScriptBuffer scriptBuffer = new ScriptBuffer();
 		WebContext webContext = WebContextFactory.get();
 		String currentPage = registerScriptSession(webContext);
-
-		addJavaScriptAction(event, scriptBuffer);
+		if(event.getEvent()==MessageEventType.SEND){
+			addJavaScriptAction(event, scriptBuffer);
+		}
+		else if(event.getEvent()==MessageEventType.DELETE){
+			deleteJavaScriptAction(event,scriptBuffer);
+		}
 		broadcastMessage(scriptBuffer);
 	}
 
@@ -41,6 +46,14 @@ public class MessageEventListener implements ApplicationListener<MessageEvent> {
 	private void addJavaScriptAction(MessageEvent event,
 			ScriptBuffer scriptBuffer) {
 		scriptBuffer.appendCall("showMessage", htmlEscape(event.getFrom()),
+				htmlEscape(event.getTextMessage()),
+				htmlEscape(event.getDate()),
+				htmlEscape(event.getId().toString()));
+	}
+	
+	private void deleteJavaScriptAction(MessageEvent event,
+			ScriptBuffer scriptBuffer) {
+		scriptBuffer.appendCall("removeMessage", htmlEscape(event.getFrom()),
 				htmlEscape(event.getTextMessage()),
 				htmlEscape(event.getDate()),
 				htmlEscape(event.getId().toString()));

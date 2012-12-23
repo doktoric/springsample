@@ -17,4 +17,6 @@ public interface IMessageService extends ApplicationEventPublisherAware {
 
 	List<Message> getAll();
 
+	void deleteMessage(String id);
+
 }

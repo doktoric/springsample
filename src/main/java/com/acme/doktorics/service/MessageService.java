@@ -5,14 +5,13 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.acme.doktorics.dao.IMessageDao;
 import com.acme.doktorics.domain.Message;
+import com.acme.doktorics.domain.MessageEventType;
 import com.acme.doktorics.event.MessageEvent;
 
 @Service
@@ -38,7 +37,7 @@ public class MessageService implements IMessageService{
         messageObject.setMessageText(message);
         messageObject.setMessageDate((new Date()).toString());
         messageDao.save(messageObject);
-        publishEvent(new MessageEvent(this, messageObject));
+        publishEvent(new MessageEvent(this, messageObject,MessageEventType.SEND));
     }
 
     /* (non-Javadoc)
@@ -46,7 +45,7 @@ public class MessageService implements IMessageService{
 	 */
     @Override
 	public void sendMessage(Message message) {
-        publishEvent(new MessageEvent(this, message));
+        publishEvent(new MessageEvent(this, message,MessageEventType.SEND));
     }
 
 
@@ -67,5 +66,13 @@ public class MessageService implements IMessageService{
     	}
     	return messages;
     }
+
+	@Override
+	public void deleteMessage(String id) {
+		Long itemId=Long.parseLong(id);
+		Message message=messageDao.findOne(itemId);
+		messageDao.delete(message);
+		publishEvent(new MessageEvent(this, message,MessageEventType.DELETE));
+	}
 
 }

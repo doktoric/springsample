@@ -37,15 +37,29 @@
 			$("#messageInput").val("");
 			return false;
 		});
+		
+		$('a[name="removeMessageButton"]').live('click',(function(){
+			DwrService.deleteMessage($(this).attr('id'));
+		}));
 	});
+	
+	
 
 	function showMessage(from, message, date, id) {
-		var id = id;
-		var actualDiv = "<div class=\"alert alert-block alert-info fade in\"><button type=\"button\" id=\""+id+"\" class=\"close\" data-dismiss=\"alert\">x</button><h4 class=\"alert-heading\">"
-				+ from + "</h4><p>" + message + "</p><p>" + date + "</p></div>";
+		
+		var actualDiv = "<div class=\"alert alert-block alert-info fade in\"  id=\""+id+"\"><button type=\"button\"  class=\"close\"  data-dismiss=\"alert\">x</button><h4 class=\"alert-heading\">"
+				+ from + "</h4><h5>" + message + "</h5><p>" + date + "</p>"+"<a class=\"btn\" name=\"removeMessageButton\" id=\""+id+"\"><i class=\"icon-remove\"></i></a></div>";
 		$("#messagesDiv").append(actualDiv);
 		$("#" + id).hide().fadeIn("slow");
-	}
+	};
+	
+	function removeMessage(from, message, date, id) {
+		$("#"+id).fadeOut(300, function(){ 
+		    $(this).remove();
+		});
+	
+		
+	};
 </script>
 
 
@@ -118,11 +132,13 @@
 		<div class="row" id="messagesDiv">
 			<c:forEach var="message" items="${messages}">
 
-				<div class="alert alert-block alert-info fade in" id="${message.id}">
+				<div class="alert alert-block alert-info fade in"  id="${message.id}">
 					<button type="button"  class="close" data-dismiss="alert">x</button>
 					<h4 class="alert-heading">${message.messageFromPerson}</h4>
-					<p>${message.messageText}</p>
+					<h5>${message.messageText}</h5>
 					<p>${message.messageDate}</p>
+					<a class="btn" name="removeMessageButton" id="${message.id}"><i class="icon-remove"></i></a>
+					
 				</div>
 
 			</c:forEach>

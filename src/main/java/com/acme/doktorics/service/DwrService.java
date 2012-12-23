@@ -19,6 +19,12 @@ public class DwrService {
     public void sendMessage(String from, String message) {
     	messageService.sendMessage(from, message);
     }
+    
+    @RemoteMethod
+    @CheckMessage
+    public void deleteMessage(String id) {
+    	messageService.deleteMessage(id);
+    }
 
   
 
