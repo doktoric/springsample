@@ -12,7 +12,7 @@ import com.acme.doktorics.annotations.CheckMessage;
 public class DwrService {
 
     @Autowired
-    private MessageService messageService;
+    private IMessageService messageService;
 
     @RemoteMethod
     @CheckMessage

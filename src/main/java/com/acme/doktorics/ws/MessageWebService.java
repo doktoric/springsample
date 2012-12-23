@@ -6,14 +6,14 @@ import javax.jws.WebService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.acme.doktorics.service.MessageService;
+import com.acme.doktorics.service.IMessageService;
 
 @Component
 @WebService
 public class MessageWebService implements MessageWebServiceInterface {
 
 	
-	@Autowired   private MessageService messageService;
+	@Autowired   private IMessageService messageService;
 	
 	@Override
 	@WebMethod(operationName = "sendMessageToChannel")

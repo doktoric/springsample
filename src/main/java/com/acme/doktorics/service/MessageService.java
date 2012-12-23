@@ -17,7 +17,7 @@ import com.acme.doktorics.event.MessageEvent;
 
 @Service
 @Transactional
-public class MessageService implements ApplicationEventPublisherAware{
+public class MessageService implements IMessageService{
 
 	@Autowired IMessageDao messageDao;	
     private ApplicationEventPublisher applicationEventPublisher;
@@ -27,7 +27,11 @@ public class MessageService implements ApplicationEventPublisherAware{
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
-    public void sendMessage(String from, String message) {
+    /* (non-Javadoc)
+	 * @see com.acme.doktorics.service.IMessageService#sendMessage(java.lang.String, java.lang.String)
+	 */
+    @Override
+	public void sendMessage(String from, String message) {
     	
         Message messageObject=new Message();
         messageObject.setMessageFromPerson(from);
@@ -37,7 +41,11 @@ public class MessageService implements ApplicationEventPublisherAware{
         publishEvent(new MessageEvent(this, messageObject));
     }
 
-    public void sendMessage(Message message) {
+    /* (non-Javadoc)
+	 * @see com.acme.doktorics.service.IMessageService#sendMessage(com.acme.doktorics.domain.Message)
+	 */
+    @Override
+	public void sendMessage(Message message) {
         publishEvent(new MessageEvent(this, message));
     }
 
@@ -47,7 +55,11 @@ public class MessageService implements ApplicationEventPublisherAware{
     }
 
     
-    public List<Message> getAll()
+    /* (non-Javadoc)
+	 * @see com.acme.doktorics.service.IMessageService#getAll()
+	 */
+    @Override
+	public List<Message> getAll()
     {
     	List<Message> messages= messageDao.findAll();
     	if(messages==null) {

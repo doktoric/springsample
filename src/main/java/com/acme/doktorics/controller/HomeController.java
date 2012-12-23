@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.acme.doktorics.service.IMessageService;
 import com.acme.doktorics.service.MessageService;
 
 /**
@@ -21,7 +22,7 @@ import com.acme.doktorics.service.MessageService;
 public class HomeController {
 	
 	@Autowired 
-	private MessageService messageService;
+	private IMessageService messageService;
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	
