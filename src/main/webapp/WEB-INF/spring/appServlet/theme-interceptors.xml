@@ -17,6 +17,6 @@
 
 	<bean id="themeResolver"
 		class="org.springframework.web.servlet.theme.CookieThemeResolver"
-		p:defaultThemeName="cyborg" />
+		p:defaultThemeName="default" />
 
 </beans>

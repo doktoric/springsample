@@ -19,9 +19,7 @@
 	<context:annotation-config />
 	<context:component-scan base-package="com.acme.doktorics.**" />
 	<aop:aspectj-autoproxy proxy-target-class="true" />
-
-
-
+	
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
 		up static resources in the ${webappRoot}/resources directory -->
@@ -37,17 +35,10 @@
 	<beans:import resource="pagenotfound.xml" />
 	<beans:import resource="theme-interceptors.xml" />
 
-	
 
 
 
-	<beans:bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-		<beans:property name="mappings">
-			<beans:props>
-				<beans:prop key="/*">pageNotExistHandler</beans:prop>
-			</beans:props>
-		</beans:property>
-	</beans:bean>
+
 
 
 </beans:beans>

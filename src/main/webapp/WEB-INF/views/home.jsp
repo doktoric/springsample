@@ -125,14 +125,21 @@
 		</div>
 	</div>
 	<header class="jumbotron subhead" id="overview">
-		<div class="container">
-			<h1>Reverse Ajax</h1>
-
+		<div class="container-fluid">
+			<div class="row-fluid">
+			
+				<div class="span5 offset2">
+					<h1>Reverse Ajax</h1>
+				</div>
+				<div class="span5">
+					
+				</div>
+			</div>
 		</div>
 	</header>
 	<div class="container">
 		<div class="row" style="padding-top: 20px !important;">
-
+				
 			<div class="hero-unit">
 				<form id="messageForm" class="form-horizontal" action="/">
 					<div class="control-group">
@@ -152,6 +159,13 @@
 							<button type="submit" class="btn">Send</button>
 						</div>
 					</div>
+					
+				</form>
+				<form action='<c:url value="report/pdf"/>'
+						method="get" style="margin-bottom: 0px !important;">
+						<button type="submit" class="btn btn-large">
+							<i class="icon-file"></i>Jasper Report
+						</button>
 				</form>
 			</div>
 

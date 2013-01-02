@@ -1,5 +1,6 @@
 package com.acme.doktorics.dto;
 
+
 public class MessageDto {
 
 	private String messageText;

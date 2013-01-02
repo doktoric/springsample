@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="1.0"
 	xmlns="http://java.sun.com/xml/ns/persistence">
-	<persistence-unit name="persistenceUnit" transaction-type="RESOURCE_LOCAL">
+	<persistence-unit name="persistenceUnit"
+		transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<properties>
 			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/springsample" />
@@ -9,8 +10,10 @@
 			<property name="hibernate.connection.password" value="" />
 			<property name="hibernate.connection.username" value="root" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />
-			<property name="hibernate.show.sql" value="true"/>
+			<property name="hibernate.show.sql" value="true" />
 			<property name="hibernate.format_sql" value="true" />
+
+		
 		</properties>
 	</persistence-unit>
 </persistence>

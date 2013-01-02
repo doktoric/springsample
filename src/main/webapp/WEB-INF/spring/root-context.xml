@@ -23,7 +23,7 @@
 	</aop:config>
 	
 	<import resource="aspects.xml" />
-	
+	<import resource="jasper-view.xml" />
 	
 	
 </beans>
