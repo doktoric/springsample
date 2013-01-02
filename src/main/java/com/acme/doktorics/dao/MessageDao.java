@@ -1,7 +1,5 @@
 package com.acme.doktorics.dao;
 
-import java.util.List;
-
 import org.springframework.stereotype.Repository;
 
 import com.acme.doktorics.domain.Message;

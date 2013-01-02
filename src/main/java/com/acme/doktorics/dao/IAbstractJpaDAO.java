@@ -2,8 +2,6 @@ package com.acme.doktorics.dao;
 
 import java.util.List;
 
-import org.springframework.transaction.annotation.Transactional;
-
 public interface IAbstractJpaDAO<T> {
 
 	void setClazz(final Class<T> clazzToSet);

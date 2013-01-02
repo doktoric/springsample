@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.acme.doktorics.service.IMessageService;
-import com.acme.doktorics.service.MessageService;
 
 /**
  * Handles requests for the application home page.

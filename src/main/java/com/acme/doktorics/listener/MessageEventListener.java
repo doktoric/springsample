@@ -24,7 +24,7 @@ public class MessageEventListener implements ApplicationListener<MessageEvent> {
 	public void onApplicationEvent(MessageEvent event) {
 		ScriptBuffer scriptBuffer = new ScriptBuffer();
 		WebContext webContext = WebContextFactory.get();
-		String currentPage = registerScriptSession(webContext);
+		registerScriptSession(webContext);
 		if(event.getEvent()==MessageEventType.SEND){
 			addJavaScriptAction(event, scriptBuffer);
 		}
@@ -66,7 +66,7 @@ public class MessageEventListener implements ApplicationListener<MessageEvent> {
 	private void broadcastMessage(ScriptBuffer scriptBuffer) {
 		for (Iterator<ScriptSession> iterator = sessionsByPage.iterator(); iterator
 				.hasNext();) {
-			ScriptSession session = (ScriptSession) iterator.next();
+			ScriptSession session = iterator.next();
 			session.addScript(scriptBuffer);
 		}
 	}

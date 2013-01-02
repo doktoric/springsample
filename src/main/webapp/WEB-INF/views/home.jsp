@@ -6,6 +6,12 @@
 <html>
 
 
+<%-- <c:if test="${empty sessionScope.actualTheme}"> --%>
+<%-- 	<c:set scope="session" var="actualTheme" value="superhero"></c:set> --%>
+<%-- </c:if> --%>
+<%-- <spring:url value="http://netdna.bootstrapcdn.com/bootswatch/2.1.0/${sessionScope.actualTheme}/bootstrap.min.css" --%>
+<%-- 		var="actTheme" /> --%>
+
 <head>
 <meta charset="utf-8">
 <title>random project</title>
@@ -15,10 +21,9 @@
 <!-- Le styles -->
 
 <link href="${resource}/css/bootstrap-responsive.css" rel="stylesheet">
-<link href="${resource}/css/bootstrap-responsive.min.css"
-	rel="stylesheet">
-<link href="${resource}/css/bootstrap.css" rel="stylesheet">
-<link href="${resource}/css/bootstrap.min.css" rel="stylesheet">
+
+<link href="<spring:theme code="css"/>" rel="stylesheet">
+
 <link href="${resource}/css/docs.css" rel="stylesheet">
 <link href="${resource}/css/prettify.css" rel="stylesheet">
 
@@ -37,28 +42,31 @@
 			$("#messageInput").val("");
 			return false;
 		});
-		
-		$('a[name="removeMessageButton"]').live('click',(function(){
+
+		$('a[name="removeMessageButton"]').live('click', (function() {
 			DwrService.deleteMessage($(this).attr('id'));
 		}));
 	});
-	
-	
 
 	function showMessage(from, message, date, id) {
-		
+
 		var actualDiv = "<div class=\"alert alert-block alert-info fade in\"  id=\""+id+"\"><button type=\"button\"  class=\"close\"  data-dismiss=\"alert\">x</button><h4 class=\"alert-heading\">"
-				+ from + "</h4><h5>" + message + "</h5><p>" + date + "</p>"+"<a class=\"btn\" name=\"removeMessageButton\" id=\""+id+"\"><i class=\"icon-remove\"></i></a></div>";
+				+ from
+				+ "</h4><h5>"
+				+ message
+				+ "</h5><p>"
+				+ date
+				+ "</p>"
+				+ "<a class=\"btn\" name=\"removeMessageButton\" id=\""+id+"\"><i class=\"icon-remove\"></i></a></div>";
 		$("#messagesDiv").append(actualDiv);
 		$("#" + id).hide().fadeIn("slow");
 	};
-	
+
 	function removeMessage(from, message, date, id) {
-		$("#"+id).fadeOut(300, function(){ 
-		    $(this).remove();
+		$("#" + id).fadeOut(300, function() {
+			$(this).remove();
 		});
-	
-		
+
 	};
 </script>
 
@@ -92,7 +100,27 @@
 						class="icon-bar"></span>
 				</button>
 				<a class="brand" href="#">RA</a>
-				<div class="nav-collapse collapse"></div>
+				<div class="nav-collapse collapse">
+					<ul class="nav">
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown"> Themes <b class="caret"></b>
+						</a>
+							<ul class="dropdown-menu">
+								<li><a href='?theme=default'>default</a></li>
+								<li><a href='?theme=amelia'>amelia</a></li>
+								<li><a href='?theme=cerulean'>cerulean</a></li>
+								<li><a href='?theme=cyborg'>cyborg</a></li>
+								<li><a href='?theme=journal'>journal</a></li>
+								<li><a href='?theme=readable'>readable</a></li>
+								<li><a href='?theme=simplex'>simplex</a></li>
+								<li><a href='?theme=slate'>slate</a></li>
+								<li><a href='?theme=spacelab'>spacelab</a></li>
+								<li><a href='?theme=spruce'>spruce</a></li>
+								<li><a href='?theme=superhero'>superhero</a></li>
+								<li><a href='?theme=united'>united</a></li>
+							</ul></li>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -132,13 +160,14 @@
 		<div class="row" id="messagesDiv">
 			<c:forEach var="message" items="${messages}">
 
-				<div class="alert alert-block alert-info fade in"  id="${message.id}">
-					<button type="button"  class="close" data-dismiss="alert">x</button>
+				<div class="alert alert-block alert-info fade in" id="${message.id}">
+					<button type="button" class="close" data-dismiss="alert">x</button>
 					<h4 class="alert-heading">${message.messageFromPerson}</h4>
 					<h5>${message.messageText}</h5>
 					<p>${message.messageDate}</p>
-					<a class="btn" name="removeMessageButton" id="${message.id}"><i class="icon-remove"></i></a>
-					
+					<a class="btn" name="removeMessageButton" id="${message.id}"><i
+						class="icon-remove"></i></a>
+
 				</div>
 
 			</c:forEach>

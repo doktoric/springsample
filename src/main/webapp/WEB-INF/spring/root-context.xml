@@ -11,11 +11,19 @@
 	<context:component-scan base-package="com.acme.doktorics.**" />
 	<tx:annotation-driven/>
 	<context:property-placeholder location="classpath*:META-INF/*.properties" />
+	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<import resource="dwr.xml" />
 	<import resource="database.xml" />
 	<import resource="webservices.xml" />
-
-
-
+	
+	<aop:config proxy-target-class="true">
+   		<aop:advisor advice-ref="traceInterceptor"
+                 pointcut="execution(public * com.acme.doktorics.service.*.*(..))"/>
+	</aop:config>
+	
+	<import resource="aspects.xml" />
+	
+	
+	
 </beans>

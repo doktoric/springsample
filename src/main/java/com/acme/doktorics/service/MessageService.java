@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.acme.doktorics.annotations.Trace;
 import com.acme.doktorics.dao.IMessageDao;
 import com.acme.doktorics.domain.Message;
 import com.acme.doktorics.domain.MessageEventType;
@@ -16,9 +17,10 @@ import com.acme.doktorics.event.MessageEvent;
 
 @Service
 @Transactional
-public class MessageService implements IMessageService{
+public class MessageService implements IMessageService {
 
-	@Autowired IMessageDao messageDao;	
+    @Autowired
+    IMessageDao messageDao;
     private ApplicationEventPublisher applicationEventPublisher;
 
     @Override
@@ -26,53 +28,60 @@ public class MessageService implements IMessageService{
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
-    /* (non-Javadoc)
-	 * @see com.acme.doktorics.service.IMessageService#sendMessage(java.lang.String, java.lang.String)
-	 */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.acme.doktorics.service.IMessageService#sendMessage(java.lang.String, java.lang.String)
+     */
     @Override
-	public void sendMessage(String from, String message) {
-    	
-        Message messageObject=new Message();
+    @Trace
+    public void sendMessage(String from, String message) {
+
+        Message messageObject = new Message();
         messageObject.setMessageFromPerson(from);
         messageObject.setMessageText(message);
         messageObject.setMessageDate((new Date()).toString());
         messageDao.save(messageObject);
-        publishEvent(new MessageEvent(this, messageObject,MessageEventType.SEND));
+        publishEvent(new MessageEvent(this, messageObject, MessageEventType.SEND));
     }
 
-    /* (non-Javadoc)
-	 * @see com.acme.doktorics.service.IMessageService#sendMessage(com.acme.doktorics.domain.Message)
-	 */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.acme.doktorics.service.IMessageService#sendMessage(com.acme.doktorics.domain.Message)
+     */
     @Override
-	public void sendMessage(Message message) {
-        publishEvent(new MessageEvent(this, message,MessageEventType.SEND));
+    @Trace
+    public void sendMessage(Message message) {
+        publishEvent(new MessageEvent(this, message, MessageEventType.SEND));
     }
-
 
     private void publishEvent(MessageEvent event) {
         applicationEventPublisher.publishEvent(event);
     }
 
-    
-    /* (non-Javadoc)
-	 * @see com.acme.doktorics.service.IMessageService#getAll()
-	 */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.acme.doktorics.service.IMessageService#getAll()
+     */
     @Override
-	public List<Message> getAll()
+    public List<Message> getAll()
     {
-    	List<Message> messages= messageDao.findAll();
-    	if(messages==null) {
-    		messages=new ArrayList<Message>();
-    	}
-    	return messages;
+        List<Message> messages = messageDao.findAll();
+        if (messages == null) {
+            messages = new ArrayList<Message>();
+        }
+        return messages;
     }
 
-	@Override
-	public void deleteMessage(String id) {
-		Long itemId=Long.parseLong(id);
-		Message message=messageDao.findOne(itemId);
-		messageDao.delete(message);
-		publishEvent(new MessageEvent(this, message,MessageEventType.DELETE));
-	}
+    @Override
+    @Trace
+    public void deleteMessage(String id) {
+        Long itemId = Long.parseLong(id);
+        Message message = messageDao.findOne(itemId);
+        messageDao.delete(message);
+        publishEvent(new MessageEvent(this, message, MessageEventType.DELETE));
+    }
 
 }
