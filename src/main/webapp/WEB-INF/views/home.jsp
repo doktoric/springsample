@@ -193,7 +193,7 @@
 	</div>
 
 
-	<footer class="footer"> </footer>
+	
 
 </body>
 
