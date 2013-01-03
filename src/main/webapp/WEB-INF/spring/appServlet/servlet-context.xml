@@ -18,7 +18,7 @@
 
 	<context:annotation-config />
 	<context:component-scan base-package="com.acme.doktorics.**" />
-	<aop:aspectj-autoproxy proxy-target-class="true" />
+<!-- 	<aop:aspectj-autoproxy proxy-target-class="true" /> -->
 	
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
@@ -30,11 +30,11 @@
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
 		in the /WEB-INF/views directory -->
-
+	<beans:import resource="theme-interceptors.xml" />
 	<beans:import resource="viewresolver.xml" />
 	<beans:import resource="pagenotfound.xml" />
 	<beans:import resource="theme-interceptors.xml" />
-
+	<beans:import resource="cache.xml" />
 
 
 

@@ -11,6 +11,8 @@
 		<config>src/main/webapp/WEB-INF/spring/appServlet/viewresolver.xml</config>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/pagenotfound.xml</config>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/theme-interceptors.xml</config>
+		<config>src/main/webapp/WEB-INF/spring/appServlet/ehcache.xml</config>
+		<config>src/main/webapp/WEB-INF/spring/appServlet/cache.xml</config>
 	</configs>
 	<configSets>
 	</configSets>

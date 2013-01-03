@@ -20,4 +20,5 @@ public interface IMessageService extends ApplicationEventPublisherAware {
 
 	void deleteMessage(String id);
 
+	void saveMessage(Message messageObject);
 }

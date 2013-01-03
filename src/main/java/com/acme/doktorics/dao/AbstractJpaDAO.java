@@ -6,47 +6,42 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 public class AbstractJpaDAO<T> implements IAbstractJpaDAO<T> {
-	private Class<T> clazz;
+    private Class<T> clazz;
 
-	@PersistenceContext
-	protected EntityManager entityManager;
-	
-	@Override
+    @PersistenceContext
+    protected EntityManager entityManager;
+
+    @Override
     public void setClazz(final Class<T> clazzToSet) {
-		this.clazz = clazzToSet;
-	}
+        this.clazz = clazzToSet;
+    }
 
-	
-	@Override
+    @Override
     public T findOne(final Long id) {
-		return entityManager.find(clazz, id);
-	}
+        return entityManager.find(clazz, id);
+    }
 
-	
-	@Override
+    @Override
     public List<T> findAll() {
-		return entityManager.createQuery("from " + clazz.getName())
-				.getResultList();
-	}
-	
-	@Override
+        List<T> result = entityManager.createQuery("from " + clazz.getName())
+                .getResultList();
+        return result;
+
+    }
+
+    @Override
     public void save(final T entity) {
-		
-			entityManager.persist(entity);
-		
-		
-	}
+        entityManager.persist(entity);
+    }
 
-	@Override
+    @Override
     public void update(final T entity) {
-		entityManager.merge(entity);
-	}
+        entityManager.merge(entity);
+    }
 
-	@Override
+    @Override
     public void delete(final T entity) {
-		entityManager.remove(entity);
-	}
-
-
+        entityManager.remove(entity);
+    }
 
 }

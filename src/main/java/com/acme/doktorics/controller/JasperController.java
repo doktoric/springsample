@@ -38,8 +38,6 @@ public class JasperController {
         parameterMap.put("datasource", JRdataSource);
         // pdfReport bean has ben declared in the jasper-views.xml file
         ModelAndView resultModelAndView = new ModelAndView("pdfReport", parameterMap);
-        
-    
         return resultModelAndView;
     }// generatePdfReport
     

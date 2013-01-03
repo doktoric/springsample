@@ -16,6 +16,7 @@
 		<commons.digester.version>2.1</commons.digester.version>
 		<commons.collections.version>3.2.1</commons.collections.version>
 		<jaxws-rt>2.2.3</jaxws-rt>
+		<ehcache-spring-annotations>1.2.0</ehcache-spring-annotations>
 	</properties>
 	<dependencies>
 
@@ -61,6 +62,20 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
 			<version>${org.springframework-version}</version>
+		</dependency>
+
+
+		<!-- Cache -->
+		<dependency>
+			<groupId>com.googlecode.ehcache-spring-annotations</groupId>
+			<artifactId>ehcache-spring-annotations</artifactId>
+			<version>${ehcache-spring-annotations}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache-core</artifactId>
+			<version>2.2.0</version>
 		</dependency>
 
 		<!-- JAX-WS -->

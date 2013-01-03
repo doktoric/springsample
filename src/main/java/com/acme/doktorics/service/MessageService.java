@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -14,14 +16,19 @@ import com.acme.doktorics.dao.IMessageDao;
 import com.acme.doktorics.domain.Message;
 import com.acme.doktorics.domain.MessageEventType;
 import com.acme.doktorics.event.MessageEvent;
+import com.googlecode.ehcache.annotations.Cacheable;
+import com.googlecode.ehcache.annotations.TriggersRemove;
 
 @Service
 @Transactional
 public class MessageService implements IMessageService {
 
+    
+ 
     @Autowired
     IMessageDao messageDao;
     private ApplicationEventPublisher applicationEventPublisher;
+    protected static final Logger logger = LoggerFactory.getLogger(MessageService.class);
 
     @Override
     public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
@@ -41,9 +48,11 @@ public class MessageService implements IMessageService {
         messageObject.setMessageFromPerson(from);
         messageObject.setMessageText(message);
         messageObject.setMessageDate((new Date()).toString());
-        messageDao.save(messageObject);
+        saveMessage(messageObject);
         publishEvent(new MessageEvent(this, messageObject, MessageEventType.SEND));
     }
+
+  
 
     /*
      * (non-Javadoc)
@@ -56,6 +65,7 @@ public class MessageService implements IMessageService {
         publishEvent(new MessageEvent(this, message, MessageEventType.SEND));
     }
 
+   
     private void publishEvent(MessageEvent event) {
         applicationEventPublisher.publishEvent(event);
     }
@@ -66,22 +76,32 @@ public class MessageService implements IMessageService {
      * @see com.acme.doktorics.service.IMessageService#getAll()
      */
     @Override
+    @Cacheable(cacheName = "allmessage")
     public List<Message> getAll()
     {
+        logger.info("Without cache...(Update cache START)");
         List<Message> messages = messageDao.findAll();
         if (messages == null) {
             messages = new ArrayList<Message>();
-        }
+        } 
+        logger.info("Without cache...(Update cache END)");
         return messages;
     }
 
     @Override
     @Trace
+    @TriggersRemove(cacheName = "allmessage", removeAll = true)
     public void deleteMessage(String id) {
         Long itemId = Long.parseLong(id);
         Message message = messageDao.findOne(itemId);
         messageDao.delete(message);
         publishEvent(new MessageEvent(this, message, MessageEventType.DELETE));
+    }
+    
+    @Override
+    @TriggersRemove(cacheName = "allmessage", removeAll = true)
+    public void saveMessage(Message messageObject) {
+        messageDao.save(messageObject);
     }
 
 }
