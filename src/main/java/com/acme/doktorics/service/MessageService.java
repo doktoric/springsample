@@ -7,17 +7,16 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.acme.doktorics.annotations.Trace;
 import com.acme.doktorics.dao.IMessageDao;
 import com.acme.doktorics.domain.Message;
 import com.acme.doktorics.domain.MessageEventType;
 import com.acme.doktorics.event.MessageEvent;
-import com.googlecode.ehcache.annotations.Cacheable;
-import com.googlecode.ehcache.annotations.TriggersRemove;
 
 @Service
 @Transactional
@@ -26,7 +25,7 @@ public class MessageService implements IMessageService {
     
  
     @Autowired
-    IMessageDao messageDao;
+    private IMessageDao messageDao;
     private ApplicationEventPublisher applicationEventPublisher;
     protected static final Logger logger = LoggerFactory.getLogger(MessageService.class);
 
@@ -35,13 +34,9 @@ public class MessageService implements IMessageService {
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.acme.doktorics.service.IMessageService#sendMessage(java.lang.String, java.lang.String)
-     */
     @Override
-    @Trace
+//    @Trace
+//    @TriggersRemove(cacheName = "allmessage", removeAll = true)
     public void sendMessage(String from, String message) {
 
         Message messageObject = new Message();
@@ -52,15 +47,7 @@ public class MessageService implements IMessageService {
         publishEvent(new MessageEvent(this, messageObject, MessageEventType.SEND));
     }
 
-  
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.acme.doktorics.service.IMessageService#sendMessage(com.acme.doktorics.domain.Message)
-     */
     @Override
-    @Trace
     public void sendMessage(Message message) {
         publishEvent(new MessageEvent(this, message, MessageEventType.SEND));
     }
@@ -70,13 +57,8 @@ public class MessageService implements IMessageService {
         applicationEventPublisher.publishEvent(event);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.acme.doktorics.service.IMessageService#getAll()
-     */
     @Override
-    @Cacheable(cacheName = "allmessage")
+    @Cacheable("allmessage")
     public List<Message> getAll()
     {
         logger.info("Without cache...(Update cache START)");
@@ -88,9 +70,9 @@ public class MessageService implements IMessageService {
         return messages;
     }
 
+  
     @Override
-    @Trace
-    @TriggersRemove(cacheName = "allmessage", removeAll = true)
+    @CacheEvict(value = "allmessage", allEntries=true)
     public void deleteMessage(String id) {
         Long itemId = Long.parseLong(id);
         Message message = messageDao.findOne(itemId);
@@ -99,7 +81,7 @@ public class MessageService implements IMessageService {
     }
     
     @Override
-    @TriggersRemove(cacheName = "allmessage", removeAll = true)
+    @CacheEvict(value = "allmessage", allEntries=true)
     public void saveMessage(Message messageObject) {
         messageDao.save(messageObject);
     }

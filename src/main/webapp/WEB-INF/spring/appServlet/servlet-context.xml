@@ -9,36 +9,13 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<!-- DispatcherServlet Context: defines this servlet's request-processing 
-		infrastructure -->
-
-	<!-- Enables the Spring MVC @Controller programming model -->
-	<annotation-driven />
-	<!-- <context:annotation-config/> -->
-
-	<context:annotation-config />
-	<context:component-scan base-package="com.acme.doktorics.**" />
-<!-- 	<aop:aspectj-autoproxy proxy-target-class="true" /> -->
 	
-
-	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
-		up static resources in the ${webappRoot}/resources directory -->
+	<annotation-driven />
+	<context:component-scan base-package="com.acme.doktorics.**" />
 	<resources mapping="/resources/**" location="/resources/" />
 
-
-
-
-	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
-		in the /WEB-INF/views directory -->
-	<beans:import resource="theme-interceptors.xml" />
+	<beans:import resource="cache.xml" />
 	<beans:import resource="viewresolver.xml" />
 	<beans:import resource="pagenotfound.xml" />
-	<beans:import resource="theme-interceptors.xml" />
-	<beans:import resource="cache.xml" />
-
-
-
-
-
 
 </beans:beans>

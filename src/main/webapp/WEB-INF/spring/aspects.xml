@@ -5,13 +5,18 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+
+	<aop:config proxy-target-class="true">
+   		<aop:advisor advice-ref="traceInterceptor"
+                 pointcut="execution(public * com.acme.doktorics.dao.*.*(..))"/>
+	</aop:config>
 
 	<aop:config>
 		<aop:advisor advice-ref="traceInterceptor"
 			pointcut="@annotation(com.acme.doktorics.annotations.Trace)" />
 		<aop:advisor advice-ref="traceInterceptor"
-			pointcut="within(com.acme.doktorics.service..*)" />
+			pointcut="within(com.acme.doktorics.dao.*.*)" />
 	</aop:config>
 
 
