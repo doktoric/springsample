@@ -5,13 +5,6 @@
 <c:url value="/resources" var="resource" />
 <html>
 
-
-<%-- <c:if test="${empty sessionScope.actualTheme}"> --%>
-<%-- 	<c:set scope="session" var="actualTheme" value="superhero"></c:set> --%>
-<%-- </c:if> --%>
-<%-- <spring:url value="http://netdna.bootstrapcdn.com/bootswatch/2.1.0/${sessionScope.actualTheme}/bootstrap.min.css" --%>
-<%-- 		var="actTheme" /> --%>
-
 <head>
 <meta charset="utf-8">
 <title>random project</title>
@@ -19,73 +12,11 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <!-- Le styles -->
-
 <link href="${resource}/css/bootstrap-responsive.css" rel="stylesheet">
-
 <link href="<spring:theme code="css"/>" rel="stylesheet">
-
 <link href="${resource}/css/docs.css" rel="stylesheet">
 <link href="${resource}/css/prettify.css" rel="stylesheet">
-
-<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
-<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
-<script src="<c:url value=" dwr/engine.js "/>"></script>
-<script src="<c:url value=" dwr/util.js "/>"></script>
-<script src="<c:url value=" dwr/interface/DwrService.js "/>"></script>
-<script type="text/javascript">
-	$(function() {
-		dwr.engine.setActiveReverseAjax(true);
-		$("#messageForm").submit(function() {
-
-			DwrService.sendMessage($("#nick").val(), $("#messageInput").val());
-
-			$("#messageInput").val("");
-			return false;
-		});
-
-		$('a[name="removeMessageButton"]').live('click', (function() {
-			DwrService.deleteMessage($(this).attr('id'));
-		}));
-	});
-
-	function showMessage(from, message, date, id) {
-
-		var actualDiv = "<div class=\"alert alert-block alert-info fade in\"  id=\""+id+"\"><button type=\"button\"  class=\"close\"  data-dismiss=\"alert\">x</button><h4 class=\"alert-heading\">"
-				+ from
-				+ "</h4><h5>"
-				+ message
-				+ "</h5><p>"
-				+ date
-				+ "</p>"
-				+ "<a class=\"btn\" name=\"removeMessageButton\" id=\""+id+"\"><i class=\"icon-remove\"></i></a></div>";
-		$("#messagesDiv").append(actualDiv);
-		$("#" + id).hide().fadeIn("slow");
-	};
-
-	function removeMessage(from, message, date, id) {
-		$("#" + id).fadeOut(300, function() {
-			$(this).remove();
-		});
-
-	};
-</script>
-
-
-
-<script src="${resource}/js/bootstrap-transition.js"></script>
-<script src="${resource}/js/bootstrap-alert.js"></script>
-<script src="${resource}/js/bootstrap-modal.js"></script>
-<script src="${resource}/js/bootstrap-dropdown.js"></script>
-<script src="${resource}/js/bootstrap-scrollspy.js"></script>
-<script src="${resource}/js/bootstrap-tab.js"></script>
-<script src="${resource}/js/bootstrap-tooltip.js"></script>
-<script src="${resource}/js/bootstrap-popover.js"></script>
-<script src="${resource}/js/bootstrap-button.js"></script>
-<script src="${resource}/js/bootstrap-collapse.js"></script>
-<script src="${resource}/js/bootstrap-carousel.js"></script>
-<script src="${resource}/js/bootstrap-typeahead.js"></script>
-
-
+<link href="${resource}/css/jquery.pnotify.default.css" rel="stylesheet">
 </head>
 
 
@@ -124,22 +55,20 @@
 			</div>
 		</div>
 	</div>
-	<header class="jumbotron subhead" id="overview">
-		<div class="container-fluid">
-			<div class="row-fluid">
-			
-				<div class="span5 offset2">
-					<h1>Reverse Ajax</h1>
-				</div>
-				<div class="span5">
-					
-				</div>
-			</div>
-		</div>
-	</header>
-	<div class="container">
+	<!-- 	<header class="jumbotron subhead" id="overview"> -->
+	<!-- 		<div class="container-fluid"> -->
+	<!-- 			<div class="row-fluid"> -->
+
+	<!-- 				<div class="span5 offset2"> -->
+	<!-- 					<h1>Reverse Ajax</h1> -->
+	<!-- 				</div> -->
+	<!-- 				<div class="span5"></div> -->
+	<!-- 			</div> -->
+	<!-- 		</div> -->
+	<!-- 	</header> -->
+	<div class="container" style="margin-top: 40px !important;">
 		<div class="row" style="padding-top: 20px !important;">
-				
+
 			<div class="hero-unit">
 				<form id="messageForm" class="form-horizontal" action="/">
 					<div class="control-group">
@@ -159,21 +88,18 @@
 							<button type="submit" class="btn">Send</button>
 						</div>
 					</div>
-					
+
 				</form>
-				<form action='<c:url value="report/pdf"/>'
-						method="get" style="margin-bottom: 0px !important;">
-						<button type="submit" class="btn btn-large">
-							<i class="icon-file"></i>Jasper Report
-						</button>
+				<form action='<c:url value="report/pdf"/>' method="get"
+					style="margin-bottom: 0px !important;">
+					<button type="submit" class="btn btn-large">
+						<i class="icon-file"></i>Jasper Report
+					</button>
 				</form>
 			</div>
-
-
 		</div>
 		<div class="row" id="messagesDiv">
 			<c:forEach var="message" items="${messages}">
-
 				<div class="alert alert-block alert-info fade in" id="${message.id}">
 					<button type="button" class="close" data-dismiss="alert">x</button>
 					<h4 class="alert-heading">${message.messageFromPerson}</h4>
@@ -181,19 +107,113 @@
 					<p>${message.messageDate}</p>
 					<a class="btn" name="removeMessageButton" id="${message.id}"><i
 						class="icon-remove"></i></a>
-
 				</div>
-
 			</c:forEach>
-
-
-
 		</div>
-
 	</div>
 
+	<!-- SCRIPTS -->
 
-	
+	<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+	<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+	<script src="<c:url value=" dwr/engine.js "/>"></script>
+	<script src="<c:url value=" dwr/util.js "/>"></script>
+	<script src="<c:url value=" dwr/interface/DwrService.js "/>"></script>
+	<script type="text/javascript">
+		var stack_bar_top = {
+			"dir1" : "down",
+			"dir2" : "right",
+			"push" : "top",
+			"spacing1" : 0,
+			"spacing2" : 0
+		};
+		var opts = {
+			title : "",
+			text : "",
+			addclass : "stack-bar-top",
+			cornerclass : "",
+			width : "100%",
+			stack : stack_bar_top,
+			type : "error",
+			delay : 1500
+		};
+
+		$(function() {
+
+			dwr.engine.setActiveReverseAjax(true);
+
+			$("#messageForm").submit(
+					function() {
+						if ($("#nick").val() && $("#messageInput").val()) {
+							DwrService.sendMessage($("#nick").val(), $(
+									"#messageInput").val());
+							$("#messageInput").val("");
+						} else {
+							opts.title = "Invalid input";
+							opts.text = "Please add new valid input";
+							opts.type = "error";
+							$.pnotify(opts);
+							$("#messageInput").val("");
+						}
+						return false;
+					});
+
+			$('a[name="removeMessageButton"]').live('click', (function() {
+				DwrService.deleteMessage($(this).attr('id'));
+			}));
+		});
+
+		function showMessage(from, message, date, id) {
+
+			var actualDiv = "<div class=\"alert alert-block alert-info fade in\"  id=\""+id+"\"><button type=\"button\"  class=\"close\"  data-dismiss=\"alert\">x</button><h4 class=\"alert-heading\">"
+					+ from
+					+ "</h4><h5>"
+					+ message
+					+ "</h5><p>"
+					+ date
+					+ "</p>"
+					+ "<a class=\"btn\" name=\"removeMessageButton\" id=\""+id+"\"><i class=\"icon-remove\"></i></a></div>";
+			opts.title = "New message from: " + from;
+			opts.text = "" + message;
+			opts.type = "info";
+			$.pnotify(opts);
+			$("#messagesDiv").append(actualDiv);
+			$("#" + id).hide().fadeIn("slow");
+		};
+
+		function removeMessage(from, message, date, id) {
+			$("#" + id).fadeOut(300, function() {
+				$(this).remove();
+			});
+			opts.title = "Deleted by: " + from;
+			opts.text = "" + message;
+			opts.type = "info";
+			$.pnotify(opts);
+		};
+	</script>
+
+
+
+	<script src="${resource}/js/bootstrap-transition.js"></script>
+	<script src="${resource}/js/bootstrap-alert.js"></script>
+	<script src="${resource}/js/bootstrap-modal.js"></script>
+	<script src="${resource}/js/bootstrap-dropdown.js"></script>
+	<script src="${resource}/js/bootstrap-scrollspy.js"></script>
+	<script src="${resource}/js/bootstrap-tab.js"></script>
+	<script src="${resource}/js/bootstrap-tooltip.js"></script>
+	<script src="${resource}/js/bootstrap-popover.js"></script>
+	<script src="${resource}/js/bootstrap-button.js"></script>
+	<script src="${resource}/js/bootstrap-collapse.js"></script>
+	<script src="${resource}/js/bootstrap-carousel.js"></script>
+	<script src="${resource}/js/bootstrap-typeahead.js"></script>
+	<script src="${resource}/js/jquery.pnotify.min.js"></script>
+
+<!-- 	END SCRIPTS -->
+
+
+
+
+
 
 </body>
 
