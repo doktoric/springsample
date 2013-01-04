@@ -9,6 +9,8 @@ import com.acme.doktorics.domain.Message;
 
 public interface IMessageService extends ApplicationEventPublisherAware {
 
+    final static Integer LIMIT=7;
+    
 	@Override
     void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher);
 	
@@ -16,7 +18,9 @@ public interface IMessageService extends ApplicationEventPublisherAware {
 
 	abstract void sendMessage(Message message);
 
-	List<Message> getAll();
+	List<Message> findAll();
+	
+	List<Message> findFrom(int begin);
 
 	void deleteMessage(String id);
 

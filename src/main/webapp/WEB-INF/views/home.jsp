@@ -30,7 +30,7 @@
 					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="brand" href="#">RA</a>
+				<a class="brand" href="#">Reverse Ajax</a>
 				<div class="nav-collapse collapse">
 					<ul class="nav">
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
@@ -100,15 +100,18 @@
 		</div>
 		<div class="row" id="messagesDiv">
 			<c:forEach var="message" items="${messages}">
-				<div class="alert alert-block alert-info fade in" id="${message.id}">
-					<button type="button" class="close" data-dismiss="alert">x</button>
-					<h4 class="alert-heading">${message.messageFromPerson}</h4>
-					<h5>${message.messageText}</h5>
-					<p>${message.messageDate}</p>
-					<a class="btn" name="removeMessageButton" id="${message.id}"><i
-						class="icon-remove"></i></a>
+				<div class="messageDivPiece">
+					<div class="alert alert-block alert-info fade in" id="${message.id}">
+						<button type="button" class="close" data-dismiss="alert" name="removeMessageButton"  id="${message.id}">x</button>
+						<h5 class="alert-heading">${message.messageFromPerson} : ${message.messageText}  -> ${message.messageDate}</h5>
+					</div>
 				</div>
 			</c:forEach>
+		</div>
+		<div id="loadmoreajaxloader" style="display:none;">
+			<center>
+				<img src="resources/img/ajax-loader.gif" />
+			</center>
 		</div>
 	</div>
 
@@ -158,27 +161,27 @@
 						return false;
 					});
 
-			$('a[name="removeMessageButton"]').live('click', (function() {
+			$('button[name="removeMessageButton"]').live('click', (function() {
 				DwrService.deleteMessage($(this).attr('id'));
 			}));
 		});
 
 		function showMessage(from, message, date, id) {
 
-			var actualDiv = "<div class=\"alert alert-block alert-info fade in\"  id=\""+id+"\"><button type=\"button\"  class=\"close\"  data-dismiss=\"alert\">x</button><h4 class=\"alert-heading\">"
-					+ from
-					+ "</h4><h5>"
-					+ message
-					+ "</h5><p>"
-					+ date
-					+ "</p>"
-					+ "<a class=\"btn\" name=\"removeMessageButton\" id=\""+id+"\"><i class=\"icon-remove\"></i></a></div>";
+			var actualDiv = messageCreator(from, message, date, id);
 			opts.title = "New message from: " + from;
 			opts.text = "" + message;
 			opts.type = "info";
 			$.pnotify(opts);
-			$("#messagesDiv").append(actualDiv);
+			$("#messagesDiv").prepend(actualDiv);
 			$("#" + id).hide().fadeIn("slow");
+		};
+		
+		function messageCreator(from, message, date, id){
+			var actualDiv = "<div class=\"messageDivPiece\"><div class=\"alert alert-block alert-info fade in\"  id=\""+id+"\"><button type=\"button\" name=\"removeMessageButton\" id=\""+id+"\" class=\"close\"  data-dismiss=\"alert\">x</button><h5 class=\"alert-heading\">"
+					+ from + ":" + message + " -> "+date
+					+ "</h5>";
+			return actualDiv;
 		};
 
 		function removeMessage(from, message, date, id) {
@@ -190,6 +193,44 @@
 			opts.type = "info";
 			$.pnotify(opts);
 		};
+		
+		
+		$(window).scroll(function()
+		{
+			if( ($(document).scrollTop() / ($(document).height() - $(window).height())) * 100 > 80)
+			{
+				$('div#loadmoreajaxloader').show();
+				var messageVisible=$(".messageDivPiece").size();
+				
+				$.ajax({
+					type: "POST",
+					data: ({
+			        
+			        }),
+					url: location.href + "messages/more/"+messageVisible,
+					success: function(data)
+					{
+						if(data)
+					    {
+							for (var i = 0; i < data.length; i++) {
+								if($("#messagesDiv").not(":has(#"+data[i]["objectId"]+")")){
+									$("#messagesDiv").append(messageCreator(data[i]["from"],data[i]["message"],data[i]["date"],data[i]["objectId"]));
+								}
+							}
+					    	$('div#loadmoreajaxloader').hide();
+					    }else {
+					        $('div#loadmoreajaxloader').html('<center>No more posts to show.</center>');
+					    }
+			       },
+				   error: function (xhr, ajaxOptions, thrownError) {
+					
+					   $('div#loadmoreajaxloader').html(thrownError+ajaxOptions+xhr);
+			       }
+			   });
+			}
+		});
+		
+		
 	</script>
 
 

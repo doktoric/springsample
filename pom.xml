@@ -349,7 +349,11 @@
 			<version>1.7.0</version>
 		</dependency>
 
-
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.9</version>
+		</dependency>
 
 
 

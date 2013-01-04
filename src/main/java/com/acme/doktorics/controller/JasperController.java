@@ -33,7 +33,7 @@ public class JasperController {
 
         logger.debug("--------------generate Jasper PDF report----------");
         Map<String, Object> parameterMap = new HashMap<String, Object>();
-        List<Message> usersList = messageService.getAll();
+        List<Message> usersList = messageService.findAll();
         JRDataSource JRdataSource = new JRBeanCollectionDataSource(usersList);
         parameterMap.put("datasource", JRdataSource);
         // pdfReport bean has ben declared in the jasper-views.xml file

@@ -22,8 +22,6 @@ import com.acme.doktorics.event.MessageEvent;
 @Transactional
 public class MessageService implements IMessageService {
 
-    
- 
     @Autowired
     private IMessageDao messageDao;
     private ApplicationEventPublisher applicationEventPublisher;
@@ -35,8 +33,8 @@ public class MessageService implements IMessageService {
     }
 
     @Override
-//    @Trace
-//    @TriggersRemove(cacheName = "allmessage", removeAll = true)
+    // @Trace
+    // @TriggersRemove(cacheName = "allmessage", removeAll = true)
     public void sendMessage(String from, String message) {
 
         Message messageObject = new Message();
@@ -52,38 +50,54 @@ public class MessageService implements IMessageService {
         publishEvent(new MessageEvent(this, message, MessageEventType.SEND));
     }
 
-   
     private void publishEvent(MessageEvent event) {
         applicationEventPublisher.publishEvent(event);
     }
 
     @Override
     @Cacheable("allmessage")
-    public List<Message> getAll()
+    public List<Message> findAll()
     {
         logger.info("Without cache...(Update cache START)");
         List<Message> messages = messageDao.findAll();
         if (messages == null) {
             messages = new ArrayList<Message>();
-        } 
+        }
         logger.info("Without cache...(Update cache END)");
         return messages;
     }
 
-  
     @Override
-    @CacheEvict(value = "allmessage", allEntries=true)
+    @CacheEvict(value = "allmessage", allEntries = true)
     public void deleteMessage(String id) {
         Long itemId = Long.parseLong(id);
         Message message = messageDao.findOne(itemId);
         messageDao.delete(message);
         publishEvent(new MessageEvent(this, message, MessageEventType.DELETE));
     }
-    
+
     @Override
-    @CacheEvict(value = "allmessage", allEntries=true)
+    @CacheEvict(value = "allmessage", allEntries = true)
     public void saveMessage(Message messageObject) {
         messageDao.save(messageObject);
+    }
+
+    @Override
+    public List<Message> findFrom(int begin) {
+        List<Message> messages = findAll();
+        List<Message> resultList=messages;
+        if(messages.size()>begin+LIMIT){
+            resultList=new  ArrayList<Message>();
+            resultList = messages.subList(begin, begin+LIMIT);
+        }
+        else if(begin >= messages.size() ) {
+            resultList=new  ArrayList<Message>();
+        }
+        else if(begin+LIMIT > messages.size() && begin< messages.size()){
+            resultList=new  ArrayList<Message>();
+            resultList = messages.subList(begin, messages.size());
+        }
+        return resultList;
     }
 
 }
