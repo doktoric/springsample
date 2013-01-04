@@ -20,6 +20,8 @@ public interface IMessageService extends ApplicationEventPublisherAware {
 
 	List<Message> findAll();
 	
+	List<Message> findAllBySortedByDate();
+	
 	List<Message> findFrom(int begin);
 
 	void deleteMessage(String id);

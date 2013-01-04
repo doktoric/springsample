@@ -10,7 +10,7 @@ public class WrappedMessage {
 
     public WrappedMessage(Message message) {
         setMessage(message.getMessageText());
-        setDate(message.getMessageDate());
+        setDate(message.getMessageDate().toString());
         setObjectId(String.valueOf(message.getId()));
         setFrom(message.getMessageFromPerson());
     }

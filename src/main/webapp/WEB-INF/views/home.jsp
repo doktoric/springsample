@@ -98,8 +98,8 @@
 				</form>
 			</div>
 		</div>
-		<div class="row" id="tempmessagesDiv">
-		</div>
+<!-- 		<div class="row" id="tempmessagesDiv"> -->
+<!-- 		</div> -->
 		<div class="row" id="messagesDiv">
 			<c:forEach var="message" items="${messages}">
 				<div class="messageDivPiece">
@@ -175,7 +175,7 @@
 			opts.text = "" + message;
 			opts.type = "info";
 			$.pnotify(opts);
-			$("#tempmessagesDiv").prepend(actualDiv);
+			$("#messagesDiv").prepend(actualDiv);
 			$("#" + id).hide().fadeIn("slow");
 		};
 		
@@ -207,22 +207,17 @@
 				$.ajax({
 					type: "POST",
 					data: ({
-			        
 			        }),
 					url: location.href + "messages/more/"+messageVisible,
-					success: function(data)
-					{
-						if(data)
-					    {
-							
+					success: function(data)	{
+						if(data)  {
 							for (var i = 0; i < data.length; i++) {
 								if($("#messagesDiv").not(":has(#"+data[i]["objectId"]+")")){
 									$("#messagesDiv").append(messageCreator(data[i]["from"],data[i]["message"],data[i]["date"],data[i]["objectId"]));
 								}
-								
-								if($("#"+data[i]["objectId"]+"").has("#tempmessagesDiv")){
-									$("#tempmessagesDiv>.messageDivPiece>"+"#"+data[i]["objectId"]+"").remove();
-								}
+								//if($("#"+data[i]["objectId"]+"").has("#tempmessagesDiv")){
+								//	$("#tempmessagesDiv>.messageDivPiece>"+"#"+data[i]["objectId"]+"").remove();
+								//}
 							}
 					    	$('div#loadmoreajaxloader').hide();
 					    }else {
@@ -230,7 +225,6 @@
 					    }
 			       },
 				   error: function (xhr, ajaxOptions, thrownError) {
-					
 					   $('div#loadmoreajaxloader').html(thrownError+ajaxOptions+xhr);
 			       }
 			   });

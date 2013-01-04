@@ -1,6 +1,9 @@
 package com.acme.doktorics.service;
+import static ch.lambdaj.Lambda.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +15,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import ch.lambdaj.function.compare.ArgumentComparator;
 
 import com.acme.doktorics.dao.IMessageDao;
 import com.acme.doktorics.domain.Message;
@@ -39,7 +44,7 @@ public class MessageService implements IMessageService {
         Message messageObject = new Message();
         messageObject.setMessageFromPerson(from);
         messageObject.setMessageText(message);
-        messageObject.setMessageDate((new Date()).toString());
+        messageObject.setMessageDate((new Date()));
         saveMessage(messageObject);
         publishEvent(new MessageEvent(this, messageObject, MessageEventType.SEND));
     }
@@ -57,12 +62,10 @@ public class MessageService implements IMessageService {
     @Cacheable("allmessage")
     public List<Message> findAll()
     {
-        logger.info("Without cache...(Update cache START)");
         List<Message> messages = messageDao.findAll();
         if (messages == null) {
             messages = new ArrayList<Message>();
         }
-        logger.info("Without cache...(Update cache END)");
         return messages;
     }
 
@@ -82,19 +85,27 @@ public class MessageService implements IMessageService {
     }
 
     @Override
-    public List<Message> findFrom(int begin) {
+    public List<Message> findAllBySortedByDate()
+    {
         List<Message> messages = findAll();
+        List<Message> sorted = sort(messages,on(Message.class).getMessageDate(),java.util.Collections.reverseOrder());
+        return sorted;
+    }
+    
+    
+ 
+
+    @Override
+    public List<Message> findFrom(int begin) {
+        List<Message> messages = findAllBySortedByDate();
         List<Message> resultList=messages;
-        if(messages.size()>begin+LIMIT){
-            resultList=new  ArrayList<Message>();
-            resultList = messages.subList(begin, begin+LIMIT);
-        }
-        else if(begin >= messages.size() ) {
-            resultList=new  ArrayList<Message>();
-        }
-        else if(begin+LIMIT > messages.size() && begin< messages.size()){
-            resultList=new  ArrayList<Message>();
-            resultList = messages.subList(begin, messages.size());
+        if(messages.size()>=begin)
+        {
+            if(begin+LIMIT>messages.size()){
+                resultList = messages.subList(begin, messages.size());
+            }else{
+                resultList = messages.subList(begin, begin+LIMIT);
+            }
         }
         return resultList;
     }

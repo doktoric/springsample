@@ -1,5 +1,7 @@
 package com.acme.doktorics.domain;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,7 +16,7 @@ public class Message {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-	private String messageDate;
+	private Date messageDate;
 	private String messageText;
 	private String messageFromPerson;
 
@@ -32,11 +34,11 @@ public class Message {
 		this.id = id;
 	}
 
-	public String getMessageDate() {
+	public Date getMessageDate() {
 		return messageDate;
 	}
 
-	public void setMessageDate(String messageDate) {
+	public void setMessageDate(Date messageDate) {
 		this.messageDate = messageDate;
 	}
 

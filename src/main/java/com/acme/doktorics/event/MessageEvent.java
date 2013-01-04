@@ -26,7 +26,7 @@ public class MessageEvent extends ApplicationEvent {
 	}
 
 	public String getDate() {
-		return message.getMessageDate();
+		return message.getMessageDate().toString();
 	}
 
 	public String getTextMessage() {

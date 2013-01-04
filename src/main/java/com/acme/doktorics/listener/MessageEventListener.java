@@ -47,7 +47,7 @@ public class MessageEventListener implements ApplicationListener<MessageEvent> {
 			ScriptBuffer scriptBuffer) {
 		scriptBuffer.appendCall("showMessage", htmlEscape(event.getFrom()),
 				htmlEscape(event.getTextMessage()),
-				htmlEscape(event.getDate()),
+				htmlEscape(event.getDate().toString()),
 				htmlEscape(event.getId().toString()));
 	}
 	
@@ -55,7 +55,7 @@ public class MessageEventListener implements ApplicationListener<MessageEvent> {
 			ScriptBuffer scriptBuffer) {
 		scriptBuffer.appendCall("removeMessage", htmlEscape(event.getFrom()),
 				htmlEscape(event.getTextMessage()),
-				htmlEscape(event.getDate()),
+				htmlEscape(event.getDate().toString()),
 				htmlEscape(event.getId().toString()));
 	}
 

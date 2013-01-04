@@ -62,7 +62,7 @@ public class HomeController {
         for (Message message : messagesByChannel) {
             message.setMessageText(HtmlUtils.htmlEscape(message.getMessageText()));
             message.setMessageFromPerson(HtmlUtils.htmlEscape(message.getMessageFromPerson()));
-            message.setMessageDate(HtmlUtils.htmlEscape(message.getMessageDate()));
+            message.setMessageDate(message.getMessageDate());
         }
     }
     
