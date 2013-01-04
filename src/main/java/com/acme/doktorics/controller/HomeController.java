@@ -53,6 +53,7 @@ public class HomeController {
     @ResponseBody
     @RequestMapping(value = "/messages/more/{piece}", method = RequestMethod.POST)
     public Collection<WrappedMessage> loadMoreMessages(@PathVariable int piece) throws InterruptedException {
+        logger.info("AJAX calling: "+piece);
         Collection<Message> messagesByChannel = messageService.findFrom(piece);
         htmlEscapeMessages(messagesByChannel);
         return wrapMessages(messagesByChannel);

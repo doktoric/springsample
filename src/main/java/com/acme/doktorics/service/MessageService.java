@@ -1,9 +1,8 @@
 package com.acme.doktorics.service;
-import static ch.lambdaj.Lambda.*;
+import static ch.lambdaj.Lambda.on;
+import static ch.lambdaj.Lambda.sort;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -15,8 +14,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import ch.lambdaj.function.compare.ArgumentComparator;
 
 import com.acme.doktorics.dao.IMessageDao;
 import com.acme.doktorics.domain.Message;
