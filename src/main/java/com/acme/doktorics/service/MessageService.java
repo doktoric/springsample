@@ -18,6 +18,7 @@ import com.acme.doktorics.domain.Message;
 import com.acme.doktorics.domain.MessageEventType;
 import com.acme.doktorics.event.MessageEvent;
 
+
 @Service
 @Transactional
 public class MessageService implements IMessageService {
@@ -33,8 +34,6 @@ public class MessageService implements IMessageService {
     }
 
     @Override
-    // @Trace
-    // @TriggersRemove(cacheName = "allmessage", removeAll = true)
     public void sendMessage(String from, String message) {
 
         Message messageObject = new Message();

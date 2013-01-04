@@ -98,6 +98,8 @@
 				</form>
 			</div>
 		</div>
+		<div class="row" id="tempmessagesDiv">
+		</div>
 		<div class="row" id="messagesDiv">
 			<c:forEach var="message" items="${messages}">
 				<div class="messageDivPiece">
@@ -173,7 +175,7 @@
 			opts.text = "" + message;
 			opts.type = "info";
 			$.pnotify(opts);
-			$("#messagesDiv").prepend(actualDiv);
+			$("#tempmessagesDiv").prepend(actualDiv);
 			$("#" + id).hide().fadeIn("slow");
 		};
 		
@@ -200,7 +202,7 @@
 			if( ($(document).scrollTop() / ($(document).height() - $(window).height())) * 100 > 80)
 			{
 				$('div#loadmoreajaxloader').show();
-				var messageVisible=$(".messageDivPiece").size();
+				var messageVisible=$("#messagesDiv>.messageDivPiece").size();
 				
 				$.ajax({
 					type: "POST",
@@ -212,9 +214,14 @@
 					{
 						if(data)
 					    {
+							
 							for (var i = 0; i < data.length; i++) {
 								if($("#messagesDiv").not(":has(#"+data[i]["objectId"]+")")){
 									$("#messagesDiv").append(messageCreator(data[i]["from"],data[i]["message"],data[i]["date"],data[i]["objectId"]));
+								}
+								
+								if($("#"+data[i]["objectId"]+"").has("#tempmessagesDiv")){
+									$("#tempmessagesDiv>.messageDivPiece>"+"#"+data[i]["objectId"]+"").remove();
 								}
 							}
 					    	$('div#loadmoreajaxloader').hide();

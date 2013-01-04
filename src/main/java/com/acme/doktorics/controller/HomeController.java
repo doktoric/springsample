@@ -45,7 +45,6 @@ public class HomeController {
         String formattedDate = dateFormat.format(date);
 
         model.addAttribute("serverTime", formattedDate);
-        messageService.findAll();
         model.addAttribute("messages", messageService.findFrom(0));
 
         return "home";
