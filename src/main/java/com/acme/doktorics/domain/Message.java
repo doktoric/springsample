@@ -1,5 +1,6 @@
 package com.acme.doktorics.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -11,7 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="messages")
-public class Message {
+public class Message implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

@@ -9,8 +9,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +17,8 @@ import com.acme.doktorics.dao.IMessageDao;
 import com.acme.doktorics.domain.Message;
 import com.acme.doktorics.domain.MessageEventType;
 import com.acme.doktorics.event.MessageEvent;
+import com.googlecode.ehcache.annotations.Cacheable;
+import com.googlecode.ehcache.annotations.TriggersRemove;
 
 
 @Service
@@ -29,7 +29,7 @@ public class MessageService implements IMessageService {
     private IMessageDao messageDao;
     private ApplicationEventPublisher applicationEventPublisher;
     protected static final Logger logger = LoggerFactory.getLogger(MessageService.class);
-
+      
     @Override
     public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
         this.applicationEventPublisher = applicationEventPublisher;
@@ -56,10 +56,12 @@ public class MessageService implements IMessageService {
     }
 
     @Override
-    @Cacheable("allmessage")
+    @Cacheable(cacheName="messages")
     public List<Message> findAll()
     {
+       
         List<Message> messages = messageDao.findAll();
+        logger.info("Cache is empty");
         if (messages == null) {
             messages = new ArrayList<Message>();
         }
@@ -67,7 +69,7 @@ public class MessageService implements IMessageService {
     }
 
     @Override
-    @CacheEvict(value = "allmessage", allEntries = true)
+    @TriggersRemove(cacheName="messages")
     public void deleteMessage(String id) {
         Long itemId = Long.parseLong(id);
         Message message = messageDao.findOne(itemId);
@@ -76,7 +78,7 @@ public class MessageService implements IMessageService {
     }
 
     @Override
-    @CacheEvict(value = "allmessage", allEntries = true)
+    @TriggersRemove(cacheName="messages")
     public void saveMessage(Message messageObject) {
         messageDao.save(messageObject);
     }

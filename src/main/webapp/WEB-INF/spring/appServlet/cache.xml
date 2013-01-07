@@ -6,12 +6,21 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring/ehcache-spring-1.1.xsd">
 
-	<ehcache:annotation-driven cache-manager="cacheManager"/>
-	<ehcache:config />
+	<ehcache:annotation-driven cache-manager="cacheManager" />
 
-	<bean id="cacheManager"
-		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" >
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" > 
 		<property name="configLocation" value="/WEB-INF/spring/appServlet/ehcache.xml" />
 	</bean>
+
+	
+	
+
+<!-- 	<bean id="cacheBuilder" class="com.google.common.cache.CacheBuilder" -->
+<!-- 		factory-method="from"> -->
+<!-- 		<constructor-arg -->
+<!-- 			value="maximumSize=100, expireAfterAccess=10m, expireAfterWrite=1h" /> -->
+<!-- 	</bean> -->
+	
+	
 
 </beans>
