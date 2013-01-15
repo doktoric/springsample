@@ -85,7 +85,7 @@
 					</div>
 					<div class="control-group">
 						<div class="controls">
-							<button type="submit" class="btn">Send</button>
+							<button type="submit" class="btn" id="submitButton">Send</button>
 						</div>
 					</div>
 
